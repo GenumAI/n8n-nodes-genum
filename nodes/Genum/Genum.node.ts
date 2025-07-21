@@ -154,7 +154,7 @@ export class Genum implements INodeType {
 						operation: ['run'],
 					},
 				},
-				description: 'Use committed prompt. Default is true',
+				description: 'Whether to use committed prompt. Default is true.',
 				default: true,
 			},
 		],
