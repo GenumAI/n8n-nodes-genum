@@ -58,6 +58,12 @@ export class Genum implements INodeType {
 				},
 				options: [
 					{
+						name: 'Get',
+						value: 'get',
+						description: 'Get a specific prompt by ID',
+						action: 'Get a specific prompt',
+					},
+					{
 						name: 'Get Many',
 						value: 'getAll',
 						description: 'Get many prompts',
@@ -109,7 +115,7 @@ export class Genum implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['prompt'],
-						operation: ['run'],
+						operation: ['run', 'get'],
 					},
 				},
 			},
@@ -151,7 +157,7 @@ export class Genum implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['prompt'],
-						operation: ['run'],
+						operation: ['run', 'get'],
 					},
 				},
 				description: 'Whether to use committed prompt. Default is true.',
@@ -250,6 +256,32 @@ export class Genum implements INodeType {
 								'Accept': 'application/json',
 								'Content-Type': 'application/json',
 								'Authorization': `Bearer ${credentials.apiToken}`,
+							},
+						});
+					} else if (operation === 'get') {
+						const credentials = await this.getCredentials('genumApi');
+						const promptIdParam = this.getNodeParameter('promptId', i);
+						const productive = this.getNodeParameter('productive', i) as boolean;
+
+						// Handle Resource Locator format
+						let promptId: string;
+						if (promptIdParam && typeof promptIdParam === 'object' && '__rl' in promptIdParam) {
+							const resourceLocator = promptIdParam as INodeParameterResourceLocator;
+							promptId = String(resourceLocator.value || '');
+						} else {
+							promptId = String(promptIdParam || '');
+						}
+
+						responseData = await this.helpers.httpRequest({
+							method: 'GET',
+							url: `https://api.genum.ai/api/v1/prompts/${promptId}`,
+							headers: {
+								'Accept': 'application/json',
+								'Content-Type': 'application/json',
+								'Authorization': `Bearer ${credentials.apiToken}`,
+							},
+							qs: {
+								productive: productive,
 							},
 						});
 					} else if (operation === 'run') {
