@@ -1,0 +1,20 @@
+{
+	"node": "n8n-nodes-genum.Genum",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Development"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://genum.ai",
+				"name": "Genum API Documentation"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://genum.ai",
+				"name": "Genum API Documentation"
+			}
+		]
+	}
+} 
